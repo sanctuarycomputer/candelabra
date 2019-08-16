@@ -1,2 +1,3 @@
 # candelabra
-Compliance auditing for the whole damn website in a single command
+
+Shining a light on your website's compliance scores
