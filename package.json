@@ -1,0 +1,12 @@
+{
+  "name": "candelabra",
+  "version": "1.0.0",
+  "description": "Shining a light on your website's compliance scores",
+  "main": "index.js",
+  "repository": "https://github.com/sanctuarycomputer/candelabra.git",
+  "author": "Joshie Fishbein <joshie@sanctuary.computer>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^3.0.0"
+  }
+}
