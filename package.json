@@ -8,11 +8,14 @@
   "author": "Joshie Fishbein <joshie@sanctuary.computer>",
   "license": "MIT",
   "dependencies": {
+    "axe-puppeteer": "^1.0.0",
     "commander": "^3.0.0",
+    "puppeteer": "^1.19.0"
+  },
+  "devDependencies": {
     "husky": "^3.0.3",
     "prettier": "^1.18.2",
-    "pretty-quick": "^1.11.1",
-    "puppeteer": "^1.19.0"
+    "pretty-quick": "^1.11.1"
   },
   "husky": {
     "hooks": {
