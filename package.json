@@ -9,7 +9,9 @@
   "license": "MIT",
   "dependencies": {
     "axe-puppeteer": "^1.0.0",
+    "colors": "^1.3.3",
     "commander": "^3.0.0",
+    "jetty": "^0.2.1",
     "puppeteer": "^1.19.0"
   },
   "devDependencies": {
