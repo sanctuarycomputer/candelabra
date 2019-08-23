@@ -1,12 +1,15 @@
 {
   "name": "candelabra",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Shining a light on your website's accessibility.",
   "main": "index.js",
   "bin": "index.js",
   "repository": "https://github.com/sanctuarycomputer/candelabra.git",
   "author": "Joshie Fishbein <joshie@sanctuary.computer>",
   "license": "MIT",
+  "scripts": {
+    "install": "node ./lib/installMessage.js"
+  },
   "dependencies": {
     "axe-puppeteer": "^1.0.0",
     "colors": "^1.3.3",
