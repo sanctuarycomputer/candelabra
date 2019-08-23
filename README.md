@@ -40,7 +40,7 @@ Because you can point Candelabra at anything, we're hoping that it encourages a 
 
 ### Candelabra does not fix anything.
 
-It will simply provide you a list of what needs to be fixed. You can format that list in several different ways with the `output` flag, but ultimately it is up to a developer to make changes.
+It will simply provide a list of what needs to be fixed. The list can be formatted in several different ways with the `output` flag. Ultimately it is up to a developer to make changes.
 
 ### Candelabra does not protect you.
 
@@ -50,4 +50,4 @@ It may make you feel more confident and secure, but a website truly designed for
 
 _Coming soon :)_
 
-Use `candelabra -h` for a current list of options while development on the initial release continues.\_
+Use `candelabra -h` for a current list of options while development on the initial release continues.
