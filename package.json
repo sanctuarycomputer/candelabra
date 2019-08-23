@@ -1,7 +1,7 @@
 {
   "name": "candelabra",
   "version": "1.0.0",
-  "description": "Shining a light on your website's compliance scores",
+  "description": "Shining a light on your website's accessibility.",
   "main": "index.js",
   "bin": "index.js",
   "repository": "https://github.com/sanctuarycomputer/candelabra.git",

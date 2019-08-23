@@ -1,5 +1,7 @@
 # candelabra
 
+<img src="./candelabra-logo.png" alt="Candelabra Logo - Lit candles on a 6-prong candelabra glowing in the dark" width="128px"/>
+
 ## What does Candelabra do?
 
 Candelabra is a web crawler designed to generate a thorough sitemap and audit each found page for valid, semantic HTML and accessibility violations. Using Candelabra, you can check any website for accessibility violations. More importantly, you can point it to local servers and other developer environments to test your code before you deploy.
