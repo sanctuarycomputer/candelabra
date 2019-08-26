@@ -2,9 +2,9 @@ import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
 import { AxeResults, Result, NodeResult } from 'axe-core';
 
-import outputResults from 'outputResults';
-import updateStatusMessage from 'updateStatusMessage';
-import { Url, Sitemap } from 'types';
+import outputResults from './outputResults';
+import updateStatusMessage from './updateStatusMessage';
+import { Url, Sitemap } from './types';
 
 export default async (url: Url): Promise<void> => {
   const sitemap: Sitemap = {};

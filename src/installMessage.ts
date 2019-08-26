@@ -1,4 +1,4 @@
-const colors = require('colors');
+import 'colors';
 
 console.log(
   '"Tawnos learned quickly from Urza that utter simplicity often led to wonderous, yet subtle utility."'

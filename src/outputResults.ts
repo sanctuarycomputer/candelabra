@@ -1,8 +1,8 @@
 import { NodeResult } from 'axe-core';
 import 'colors';
 
-import { Url, Sitemap } from 'types';
-import uniqueViolations from 'uniqueViolations';
+import { Url, Sitemap } from './types';
+import uniqueViolations from './uniqueViolations';
 
 export default (
   url: Url,

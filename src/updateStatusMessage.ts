@@ -1,6 +1,6 @@
 import { NodeResult } from 'axe-core';
 import 'colors';
-import { Url } from 'types';
+import { Url } from './types';
 
 export default (
   url: Url,
