@@ -19,10 +19,10 @@ export default (
   process.stdout.clearScreenDown();
   process.stdout.write(`${'[COMPLETED]'.green.bold} ${url.white}` + '\n\n');
 
-  if (totalViolations) {
+  if (totalViolations.length) {
     process.stdout.write(
       `There were ${
-        totalViolations.toString().underline
+        totalViolations.length.toString().underline
       } total violations and ${
         uniqueViolationsOnWebsite.length.toString().underline
       } unique violations found.`.red.bold + '\n\n'
