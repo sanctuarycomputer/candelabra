@@ -1,8 +1,6 @@
 import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
 import { AxeResults, Result, NodeResult } from 'axe-core';
-import colors from 'colors';
-import isEqual from 'lodash/isEqual';
 
 import outputResults from 'outputResults';
 import updateStatusMessage from 'updateStatusMessage';
@@ -18,10 +16,10 @@ export default async (url: Url): Promise<void> => {
   let totalViolations: NodeResult[] = [];
 
   const recursivelyCheckForViolations = async (url: Url): Promise<void> => {
-    const checkedPages = Object.keys(sitemap);
+    const checkedUrls = Object.keys(sitemap);
 
-    if (!Object.keys(sitemap).includes(url)) {
-      updateStatusMessage(url, entryUrl, queue);
+    if (!checkedUrls.includes(url)) {
+      updateStatusMessage(url, entryUrl, queue, totalViolations);
 
       await page.setViewport({ width: 1366, height: 768 });
       await page.setBypassCSP(true);
@@ -31,7 +29,9 @@ export default async (url: Url): Promise<void> => {
       });
 
       const results: AxeResults = await new AxePuppeteer(page).analyze();
-      const violations: { [key: string]: Result[] } = results.violations.reduce(
+      const violationsByCategory: {
+        [key: string]: Result[];
+      } = results.violations.reduce(
         (
           violationCategories: { [key: string]: Result },
           violationCategory: Result
@@ -48,7 +48,7 @@ export default async (url: Url): Promise<void> => {
         {}
       );
 
-      sitemap[url] = violations;
+      sitemap[url] = violationsByCategory;
 
       const links: Url[] = await page.evaluate(() => {
         const anchors: NodeListOf<
@@ -76,7 +76,7 @@ export default async (url: Url): Promise<void> => {
       queue = queue
         .concat(internalLinks)
         .filter(
-          (link: Url): boolean => link !== url && !checkedPages.includes(link)
+          (link: Url): boolean => link !== url && !checkedUrls.includes(link)
         )
         .reduce(
           (uniques: Url[], link: Url) =>
@@ -91,5 +91,5 @@ export default async (url: Url): Promise<void> => {
   await recursivelyCheckForViolations(url);
   await browser.close();
 
-  outputResults(sitemap);
+  outputResults(url, sitemap, totalViolations);
 };

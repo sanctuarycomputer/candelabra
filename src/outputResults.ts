@@ -1,9 +1,15 @@
-import { Sitemap } from 'types';
+import { NodeResult } from 'axe-core';
+import 'colors';
 
-export default (sitemap: Sitemap): void => {
-  const violations = flattenSitemapViolations();
-  const totalViolations = violations.length;
-  const uniqueViolationsOnWebsite = uniqueViolations(violations);
+import { Url, Sitemap } from 'types';
+import uniqueViolations from 'uniqueViolations';
+
+export default (
+  url: Url,
+  sitemap: Sitemap,
+  totalViolations: NodeResult[]
+): void => {
+  const uniqueViolationsOnWebsite = uniqueViolations(totalViolations);
 
   // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
   process.stdout.moveCursor(0, -2);
