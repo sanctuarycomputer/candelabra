@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
 import { AxeResults, Result, NodeResult } from 'axe-core';
 
-import outputResults from './outputResults';
+import completionMessage from './completionMessage';
 import updateStatusMessage from './updateStatusMessage';
 import { Url, Sitemap } from './types';
 
@@ -91,5 +91,5 @@ export default async (url: Url): Promise<void> => {
   await recursivelyCheckForViolations(url);
   await browser.close();
 
-  outputResults(url, sitemap, totalViolations);
+  completionMessage(url, sitemap, totalViolations);
 };
