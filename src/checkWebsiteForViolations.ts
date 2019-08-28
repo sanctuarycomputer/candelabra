@@ -4,9 +4,10 @@ import { AxeResults, Result, NodeResult } from 'axe-core';
 
 import completionMessage from './completionMessage';
 import updateStatusMessage from './updateStatusMessage';
-import { Url, Sitemap } from './types';
+import output from './output';
+import { Url, Sitemap, CommandOptions } from './types';
 
-export default async (url: Url): Promise<void> => {
+export default async (url: Url, options: CommandOptions): Promise<void> => {
   const sitemap: Sitemap = {};
   const entryUrl: Url = url;
   const browser: puppeteer.Browser = await puppeteer.launch();
@@ -90,6 +91,8 @@ export default async (url: Url): Promise<void> => {
 
   await recursivelyCheckForViolations(url);
   await browser.close();
+
+  output(sitemap, totalViolations, options);
 
   completionMessage(url, sitemap, totalViolations);
 };

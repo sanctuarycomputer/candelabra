@@ -1,11 +1,13 @@
 import { Result } from 'axe-core';
 
-export enum OutputFormat {
-  INLINE = 'INLINE',
-  JSON = 'JSON'
+export interface CommandOptions {
+  output: Filepath | null;
+  groupBy: OutputGroupBy | null;
 }
 
-export enum OutputStyle {
+export type Filepath = string;
+
+export enum OutputGroupBy {
   SEVERITY = 'SEVERITY',
   PAGE = 'PAGE',
   TYPE = 'TYPE'
