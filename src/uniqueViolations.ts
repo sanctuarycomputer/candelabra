@@ -1,11 +1,11 @@
 import isEqual from 'lodash/isEqual';
-import { NodeResult } from 'axe-core';
+import { Violation } from './types';
 
-export default (violations: NodeResult[]): NodeResult[] => {
+export default (violations: Violation[]): Violation[] => {
   return violations.reduce(
-    (uniques: NodeResult[], violation: NodeResult): NodeResult[] => {
+    (uniques: Violation[], violation: Violation): Violation[] => {
       const violationIsDuplicate: boolean = uniques.some(
-        (existingViolation: NodeResult): boolean =>
+        (existingViolation: Violation): boolean =>
           isEqual(existingViolation, violation)
       );
 

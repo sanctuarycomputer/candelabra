@@ -2,17 +2,25 @@ import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
 import { AxeResults, Result } from 'axe-core';
 
+import calculateTotals from './calculateTotals';
 import completionMessage from './completionMessage';
 import updateStatusMessage from './updateStatusMessage';
 import output from './output';
-import { Url, Sitemap, Violation, AxeRule, CommandOptions } from './types';
+import {
+  Url,
+  Sitemap,
+  Violation,
+  AxeRule,
+  CommandOptions,
+  Totals
+} from './types';
 
 export default async (url: Url, options: CommandOptions): Promise<void> => {
   const sitemap: Sitemap = {};
   const entryUrl: Url = url;
   const browser: puppeteer.Browser = await puppeteer.launch();
   const page: puppeteer.Page = await browser.newPage();
-  ``;
+
   let queue: Url[] = [];
   let totalViolations: Violation[] = [];
 
@@ -93,7 +101,8 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
   await recursivelyCheckForViolations(url);
   await browser.close();
 
-  output(sitemap, totalViolations, options);
+  const totals: Totals = calculateTotals(url, totalViolations);
+  output(totals, options);
 
-  completionMessage(url, sitemap, totalViolations);
+  completionMessage(totals);
 };

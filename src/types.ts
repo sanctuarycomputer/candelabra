@@ -1,16 +1,12 @@
 import { Result, NodeResult } from 'axe-core';
+import uniqueViolations from 'uniqueViolations';
 
-export interface CommandOptions {
-  output: Filepath | null;
-  groupBy: OutputGroupBy | null;
-}
-
-export type Filepath = string;
-export enum OutputGroupBy {
-  SEVERITY = 'SEVERITY',
-  PAGE = 'PAGE',
-  TYPE = 'TYPE'
-}
+export type AxeImpact =
+  | 'critical'
+  | 'serious'
+  | 'moderate'
+  | 'minor'
+  | 'no-impact';
 
 export type AxeRule =
   | 'accesskeys'
@@ -98,25 +94,50 @@ export type AxeRule =
   | 'video-caption'
   | 'video-description';
 
-export interface Sitemap {
-  [key: string]: UrlResults;
+export interface CommandOptions {
+  output: Filepath | null;
+  groupBy: OutputGroupBy | null;
+}
+
+export type Filepath = string;
+
+export enum OutputGroupBy {
+  SEVERITY = 'SEVERITY',
+  PAGE = 'PAGE',
+  TYPE = 'TYPE'
+}
+
+export type Sitemap = {
+  [key in Url]: UrlResults;
+};
+
+export interface Totals {
+  url: Url;
+  score: number;
+  totalPages: number;
+  violations: Violation[];
+  uniqueViolations: Violation[];
 }
 
 export type Url = string;
 
-export interface UrlResults {
-  [key: string]: Result[];
-}
+export type UrlResults = {
+  [key in Url]: Result[];
+};
 
 export interface Violation extends NodeResult {
   page: Url;
   rule: AxeRule;
 }
 
-export interface ViolationsGroupedBySeverity {
-  critical: Violation[];
-  serious: Violation[];
-  moderate: Violation[];
-  minor: Violation[];
-  'no-impact': Violation[];
-}
+export type ViolationsGroupedByPage = {
+  [key in Url]: Violation[];
+};
+
+export type ViolationsGroupedByRule = {
+  [key: string]: Violation[];
+};
+
+export type ViolationsGroupedBySeverity = {
+  [key in AxeImpact]: Violation[];
+};
