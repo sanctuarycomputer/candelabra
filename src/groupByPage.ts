@@ -6,7 +6,7 @@ export default (violations: Violation[]): ViolationsGroupedByPage => {
       violationsGroupedByPage: ViolationsGroupedByPage,
       violation: Violation
     ) => {
-      if (violation.page) {
+      if (violationsGroupedByPage[violation.page]) {
         violationsGroupedByPage[violation.page].push(violation);
       } else {
         violationsGroupedByPage[violation.page] = [violation];

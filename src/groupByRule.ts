@@ -6,7 +6,7 @@ export default (violations: Violation[]): ViolationsGroupedByRule => {
       violationsGroupedByRule: ViolationsGroupedByRule,
       violation: Violation
     ) => {
-      if (violation.rule) {
+      if (violationsGroupedByRule[violation.rule]) {
         violationsGroupedByRule[violation.rule].push(violation);
       } else {
         violationsGroupedByRule[violation.rule] = [violation];
