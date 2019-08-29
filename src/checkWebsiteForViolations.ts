@@ -1,20 +1,20 @@
 import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
-import { AxeResults, Result, NodeResult } from 'axe-core';
+import { AxeResults, Result } from 'axe-core';
 
 import completionMessage from './completionMessage';
 import updateStatusMessage from './updateStatusMessage';
 import output from './output';
-import { Url, Sitemap, CommandOptions } from './types';
+import { Url, Sitemap, Violation, AxeRule, CommandOptions } from './types';
 
 export default async (url: Url, options: CommandOptions): Promise<void> => {
   const sitemap: Sitemap = {};
   const entryUrl: Url = url;
   const browser: puppeteer.Browser = await puppeteer.launch();
   const page: puppeteer.Page = await browser.newPage();
-
+  ``;
   let queue: Url[] = [];
-  let totalViolations: NodeResult[] = [];
+  let totalViolations: Violation[] = [];
 
   const recursivelyCheckForViolations = async (url: Url): Promise<void> => {
     const checkedUrls = Object.keys(sitemap);
@@ -30,26 +30,27 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
       });
 
       const results: AxeResults = await new AxePuppeteer(page).analyze();
-      const violationsByCategory: {
+      const violationsByRule: {
         [key: string]: Result[];
       } = results.violations.reduce(
-        (
-          violationCategories: { [key: string]: Result },
-          violationCategory: Result
-        ) => {
-          if (violationCategory.nodes.length) {
-            violationCategories[violationCategory.id] = violationCategory;
+        (violationRules: { [key: string]: Result }, violationRule: Result) => {
+          if (violationRule.nodes.length) {
+            violationRules[violationRule.id] = violationRule;
             totalViolations = totalViolations.concat([
-              ...violationCategory.nodes
+              ...violationRule.nodes.map(node => ({
+                ...node,
+                page: url,
+                rule: violationRule.id as AxeRule
+              }))
             ]);
           }
 
-          return violationCategories;
+          return violationRules;
         },
         {}
       );
 
-      sitemap[url] = violationsByCategory;
+      sitemap[url] = violationsByRule;
 
       const links: Url[] = await page.evaluate(() => {
         const anchors: NodeListOf<
