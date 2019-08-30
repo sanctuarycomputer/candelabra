@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
 import { AxeResults, Result } from 'axe-core';
 
+import urlIsCrawlable from './urlIsCrawlable';
 import calculateTotals from './calculateTotals';
 import completionMessage from './completionMessage';
 import updateStatusMessage from './updateStatusMessage';
@@ -33,8 +34,8 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
       await page.setViewport({ width: 1366, height: 768 });
       await page.setBypassCSP(true);
       await page.goto(url, {
-        waitUntil: 'networkidle2',
-        timeout: 3 * 60 * 1000
+        waitUntil: 'networkidle2'
+        // timeout: 3 * 60 * 1000
       });
 
       const results: AxeResults = await new AxePuppeteer(page).analyze();
@@ -79,9 +80,9 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
         return uniqueHrefs;
       });
 
-      const internalLinks: Url[] = links.filter((link: Url): boolean =>
-        link.includes(entryUrl)
-      );
+      const internalLinks: Url[] = links
+        .filter((link: Url): boolean => link.includes(entryUrl))
+        .filter((link: Url): boolean => urlIsCrawlable(link));
 
       queue = queue
         .concat(internalLinks)

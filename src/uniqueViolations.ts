@@ -1,4 +1,3 @@
-import isEqual from 'lodash/isEqual';
 import { Violation } from './types';
 
 export default (violations: Violation[]): Violation[] => {
@@ -6,7 +5,8 @@ export default (violations: Violation[]): Violation[] => {
     (uniques: Violation[], violation: Violation): Violation[] => {
       const violationIsDuplicate: boolean = uniques.some(
         (existingViolation: Violation): boolean =>
-          isEqual(existingViolation, violation)
+          existingViolation.html === violation.html &&
+          existingViolation.rule === violation.rule
       );
 
       return violationIsDuplicate ? uniques : uniques.concat([violation]);
