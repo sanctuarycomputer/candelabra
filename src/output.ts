@@ -12,6 +12,12 @@ import groupByRule from './groupByRule';
 import groupByPage from './groupByPage';
 
 const outputBySeverity = (results: ViolationsGroupedBySeverity): void => {
+  // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
+  process.stdout.moveCursor(0, -2);
+  // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
+  process.stdout.cursorTo(0);
+  // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
+  process.stdout.clearScreenDown();
   process.stdout.write('\n\n');
 
   if (results['critical'].length) {

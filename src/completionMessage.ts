@@ -3,12 +3,6 @@ import 'colors';
 import { Totals } from './types';
 
 export default (totals: Totals): void => {
-  // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
-  process.stdout.moveCursor(0, -2);
-  // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
-  process.stdout.cursorTo(0);
-  // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
-  process.stdout.clearScreenDown();
   process.stdout.write(
     `${'[COMPLETED]'.green.bold} ${totals.url.white}` + '\n\n'
   );
