@@ -61,24 +61,21 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
 
       sitemap[url] = violationsByRule;
 
-      const links: Url[] = await page.evaluate(() => {
-        const anchors: NodeListOf<
-          HTMLAnchorElement
-        > = document.querySelectorAll('a');
-        const uniqueHrefs: Url[] = Array.from(anchors).reduce(
-          (uniqueHrefsOnPage: Url[], anchor: HTMLAnchorElement): Url[] => {
-            const href: string = anchor.href;
-            const hrefIsDuplicate: boolean = uniqueHrefsOnPage.includes(href);
+      const links: Url[] = await page.$$eval('a', anchors =>
+        anchors
+          .map(a => a as HTMLAnchorElement)
+          .reduce(
+            (uniqueHrefsOnPage: Url[], anchor: HTMLAnchorElement): Url[] => {
+              const href: string = anchor.href;
+              const hrefIsDuplicate: boolean = uniqueHrefsOnPage.includes(href);
 
-            return hrefIsDuplicate
-              ? uniqueHrefsOnPage
-              : uniqueHrefsOnPage.concat([href as Url]);
-          },
-          []
-        );
-
-        return uniqueHrefs;
-      });
+              return hrefIsDuplicate
+                ? uniqueHrefsOnPage
+                : uniqueHrefsOnPage.concat([href as Url]);
+            },
+            []
+          )
+      );
 
       const internalLinks: Url[] = links
         .filter((link: Url): boolean => link.includes(entryUrl))
