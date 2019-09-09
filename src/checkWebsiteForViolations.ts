@@ -34,13 +34,13 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
       await page.setViewport({ width: 1366, height: 768 });
       await page.setBypassCSP(true);
       await page.goto(url, {
-        waitUntil: 'networkidle2'
-        // timeout: 3 * 60 * 1000
+        waitUntil: 'networkidle2',
+        timeout: 3 * 60 * 1000
       });
 
       const results: AxeResults = await new AxePuppeteer(page).analyze();
       const violationsByRule: {
-        [key: string]: Result[];
+        [key: string]: Result;
       } = results.violations.reduce(
         (violationRules: { [key: string]: Result }, violationRule: Result) => {
           if (violationRule.nodes.length) {

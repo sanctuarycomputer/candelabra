@@ -1,5 +1,4 @@
 import { Result, NodeResult } from 'axe-core';
-import uniqueViolations from 'uniqueViolations';
 
 export type AxeImpact =
   | 'critical'
@@ -108,7 +107,9 @@ export enum OutputGroupBy {
 }
 
 export type Sitemap = {
-  [key in Url]: UrlResults;
+  [key in Url]: {
+    [key: string]: Result;
+  };
 };
 
 export interface Totals {
@@ -120,10 +121,6 @@ export interface Totals {
 }
 
 export type Url = string;
-
-export type UrlResults = {
-  [key in Url]: Result[];
-};
 
 export interface Violation extends NodeResult {
   page: Url;
