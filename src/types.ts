@@ -103,7 +103,7 @@ export type Filepath = string;
 export enum OutputGroupBy {
   SEVERITY = 'SEVERITY',
   PAGE = 'PAGE',
-  TYPE = 'TYPE'
+  RULE = 'RULE'
 }
 
 export type Sitemap = {
