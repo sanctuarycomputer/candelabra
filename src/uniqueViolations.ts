@@ -1,12 +1,12 @@
-import isEqual from 'lodash/isEqual';
-import { NodeResult } from 'axe-core';
+import { Violation } from './types';
 
-export default (violations: NodeResult[]): NodeResult[] => {
+export default (violations: Violation[]): Violation[] => {
   return violations.reduce(
-    (uniques: NodeResult[], violation: NodeResult): NodeResult[] => {
+    (uniques: Violation[], violation: Violation): Violation[] => {
       const violationIsDuplicate: boolean = uniques.some(
-        (existingViolation: NodeResult): boolean =>
-          isEqual(existingViolation, violation)
+        (existingViolation: Violation): boolean =>
+          existingViolation.html === violation.html &&
+          existingViolation.rule === violation.rule
       );
 
       return violationIsDuplicate ? uniques : uniques.concat([violation]);

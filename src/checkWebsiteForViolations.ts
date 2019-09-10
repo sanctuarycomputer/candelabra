@@ -1,19 +1,29 @@
 import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
-import { AxeResults, Result, NodeResult } from 'axe-core';
+import { AxeResults, Result } from 'axe-core';
 
-import outputResults from './outputResults';
+import urlIsCrawlable from './urlIsCrawlable';
+import calculateTotals from './calculateTotals';
+import completionMessage from './completionMessage';
 import updateStatusMessage from './updateStatusMessage';
-import { Url, Sitemap } from './types';
+import output from './output';
+import {
+  Url,
+  Sitemap,
+  Violation,
+  AxeRule,
+  CommandOptions,
+  Totals
+} from './types';
 
-export default async (url: Url): Promise<void> => {
+export default async (url: Url, options: CommandOptions): Promise<void> => {
   const sitemap: Sitemap = {};
   const entryUrl: Url = url;
   const browser: puppeteer.Browser = await puppeteer.launch();
   const page: puppeteer.Page = await browser.newPage();
 
   let queue: Url[] = [];
-  let totalViolations: NodeResult[] = [];
+  let totalViolations: Violation[] = [];
 
   const recursivelyCheckForViolations = async (url: Url): Promise<void> => {
     const checkedUrls = Object.keys(sitemap);
@@ -29,49 +39,47 @@ export default async (url: Url): Promise<void> => {
       });
 
       const results: AxeResults = await new AxePuppeteer(page).analyze();
-      const violationsByCategory: {
-        [key: string]: Result[];
+      const violationsByRule: {
+        [key: string]: Result;
       } = results.violations.reduce(
-        (
-          violationCategories: { [key: string]: Result },
-          violationCategory: Result
-        ) => {
-          if (violationCategory.nodes.length) {
-            violationCategories[violationCategory.id] = violationCategory;
+        (violationRules: { [key: string]: Result }, violationRule: Result) => {
+          if (violationRule.nodes.length) {
+            violationRules[violationRule.id] = violationRule;
             totalViolations = totalViolations.concat([
-              ...violationCategory.nodes
+              ...violationRule.nodes.map(node => ({
+                ...node,
+                page: url,
+                rule: violationRule.id as AxeRule
+              }))
             ]);
           }
 
-          return violationCategories;
+          return violationRules;
         },
         {}
       );
 
-      sitemap[url] = violationsByCategory;
+      sitemap[url] = violationsByRule;
 
-      const links: Url[] = await page.evaluate(() => {
-        const anchors: NodeListOf<
-          HTMLAnchorElement
-        > = document.querySelectorAll('a');
-        const uniqueHrefs: Url[] = Array.from(anchors).reduce(
-          (uniqueHrefsOnPage: Url[], anchor: HTMLAnchorElement): Url[] => {
-            const href: string = anchor.href;
-            const hrefIsDuplicate: boolean = uniqueHrefsOnPage.includes(href);
+      const links: Url[] = await page.$$eval('a', anchors =>
+        anchors
+          .map(a => a as HTMLAnchorElement)
+          .reduce(
+            (uniqueHrefsOnPage: Url[], anchor: HTMLAnchorElement): Url[] => {
+              const href: string = anchor.href;
+              const hrefIsDuplicate: boolean = uniqueHrefsOnPage.includes(href);
 
-            return hrefIsDuplicate
-              ? uniqueHrefsOnPage
-              : uniqueHrefsOnPage.concat([href as Url]);
-          },
-          []
-        );
-
-        return uniqueHrefs;
-      });
-
-      const internalLinks: Url[] = links.filter((link: Url): boolean =>
-        link.includes(entryUrl)
+              return hrefIsDuplicate
+                ? uniqueHrefsOnPage
+                : uniqueHrefsOnPage.concat([href as Url]);
+            },
+            []
+          )
       );
+
+      const internalLinks: Url[] = links
+        .filter((link: Url): boolean => link.includes(entryUrl))
+        .filter((link: Url): boolean => urlIsCrawlable(link));
 
       queue = queue
         .concat(internalLinks)
@@ -91,5 +99,8 @@ export default async (url: Url): Promise<void> => {
   await recursivelyCheckForViolations(url);
   await browser.close();
 
-  outputResults(url, sitemap, totalViolations);
+  const totals: Totals = calculateTotals(url, totalViolations);
+  output(totals, options);
+
+  completionMessage(totals);
 };
