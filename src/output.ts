@@ -11,6 +11,7 @@ import groupByRule from './groupByRule';
 import groupByPage from './groupByPage';
 import outputBySeverity from './outputBySeverity';
 import outputByRule from './outputByRule';
+import outputByPage from './outputByPage';
 
 export default (totals: Totals, options: CommandOptions): void => {
   const groupBy: OutputGroupBy = options.groupBy || OutputGroupBy.SEVERITY;
@@ -32,6 +33,9 @@ export default (totals: Totals, options: CommandOptions): void => {
       }
     case OutputGroupBy.PAGE:
       results = groupByPage(totals.violations);
+      if (!options.output) {
+        outputByPage(results as ViolationsGroupedByPage);
+      }
   }
 
   if (options.output) {
