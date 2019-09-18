@@ -8,6 +8,8 @@ Candelabra is a web crawler designed to generate a thorough sitemap and audit ea
 
 It works out of the box for any website that doesn't require authentication on entry. This means it can audit any JavaScript-rendered website including those built with the popular front-end frameworks: React, Vue, Ember, Angular, etc.
 
+Want to read more about Candelabra? [Check out the wiki](https://github.com/sanctuarycomputer/candelabra/wiki).
+
 ## How do I use Candelabra?
 
 Candelabra was designed to require no configuration. Simply install the package and fire it up. For detailed usage, see [Options](#options).
@@ -20,34 +22,30 @@ yarn global add candelabra
 candelabra <entry-url>
 ```
 
-## How does Candelabra work?
-
-This utility is uses `puppeteer` and `axe-puppeteer` to simulate a browser's impression of a web page. It crawls entry points for internal links while simultaneously checking the accessibility of the HTML content found.
-
-It's easy to forget that most websites are composed of hundreds or thousands of pages. With this in mind, know that an audit could take several minutes to run.
-
-## Why was Candelabra made?
-
-There are plenty of auditing tools that will give you a detailed report for a single URL. This has helped, but it has remained difficult to be truly comprehensive. We believe that it should be simple and require little technical know-how to understand precisely how accessible a website actually is.
-
-As for why you should care about any of this, [Deque Labs said it best](https://github.com/dequelabs/axe-core#philosophy):
-
-> The web can only become an accessible, inclusive space if developers are empowered to take responsibility for accessibility testing and accessible coding practices.
-
-Because you can point Candelabra at anything, we're hoping that it encourages a climate of accountability.
-
-## What does Candelabra _**not**_ do?
-
-### Candelabra does not fix anything.
-
-It will simply provide a list of what needs to be fixed. The list can be formatted in several different ways with the `output` flag. Ultimately it is up to a developer to make changes.
-
-### Candelabra does not protect you.
-
-It may make you feel more confident and secure, but a website truly designed for _everyone_ has considerable thought put into every image `alt` and every `aria-label`. You can carelessly add a11y-friendly attributes to elements to trick a robot, but the actual people – for whom you make these changes – will continue to be left behind.
-
 ## Options
 
-_Coming soon :)_
+| Flag                  | Description                                             |
+| --------------------- | ------------------------------------------------------- |
+| -V, --version         | output the version number                               |
+| -o, --output <path>   | file path to output JSON, defaults to displaying inline |
+| -g, --groupBy <group> | SEVERITY                                                | PAGE | TYPE, defaults to SEVERITY |
+| -h, --help            | output usage information                                |
 
-Use `candelabra -h` for a current list of options while development on the initial release continues.
+Use `candelabra -h` for a current list of options while development continues.
+
+## Contributing
+
+Simply clone the repository and get to work! Create pull requests against the repository to merge code in.
+
+```bash
+# clone the repo
+git clone https://github.com/sanctuarycomputer/candelabra.git
+
+# build the changes
+yarn build
+
+# run developer instance against a website
+node lib/index.js <entry-url> <options>
+```
+
+Feel free to make an issue if something isn't working properly or if you think there's a way to enhance the experience.
