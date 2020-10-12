@@ -28,7 +28,7 @@ candelabra <entry-url>
 | --------------------- | ------------------------------------------------------- |
 | -V, --version         | output the version number                               |
 | -o, --output <path>   | file path to output JSON, defaults to displaying inline |
-| -g, --groupBy <group> | SEVERITY / PAGE / TYPE, defaults to SEVERITY            |
+| -g, --groupBy <group> | SEVERITY / PAGE / RULE, defaults to SEVERITY            |
 | -h, --help            | output usage information                                |
 
 Use `candelabra -h` for a current list of options while development continues.

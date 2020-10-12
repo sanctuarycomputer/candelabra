@@ -3,9 +3,11 @@ import { AxePuppeteer } from 'axe-puppeteer';
 import { AxeResults, Result } from 'axe-core';
 
 import urlIsCrawlable from './urlIsCrawlable';
+import urlIsValidEntry from './urlIsValidEntry';
 import calculateTotals from './calculateTotals';
 import completionMessage from './completionMessage';
 import updateStatusMessage from './updateStatusMessage';
+
 import output from './output';
 import {
   Url,
@@ -17,6 +19,21 @@ import {
 } from './types';
 
 export default async (url: Url, options: CommandOptions): Promise<void> => {
+  if (!url) {
+    process.stdout.write(
+      `Error: Please provide a valid URL with a valid protocol.`.red
+    );
+    process.exit();
+  }
+
+  if (!urlIsValidEntry(url)) {
+    process.stdout.write(
+      `Error: ${url.underline} is not a valid URL. Please provide a valid URL with a valid protocol.`
+        .red
+    );
+    process.exit();
+  }
+
   const sitemap: Sitemap = {};
   const entryUrl: Url = url;
   const browser: puppeteer.Browser = await puppeteer.launch();
