@@ -96,6 +96,7 @@ export type AxeRule =
 export interface CommandOptions {
   output: Filepath | null;
   groupBy: OutputGroupBy | null;
+  limit: number | null;
 }
 
 export type Filepath = string;

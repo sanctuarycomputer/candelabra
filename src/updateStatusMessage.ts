@@ -5,7 +5,7 @@ import { Url } from './types';
 export default (
   url: Url,
   entryUrl: Url,
-  queue: Url[],
+  remaining: number,
   totalViolations: NodeResult[]
 ): void => {
   // @ts-ignore - see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31505
@@ -20,7 +20,7 @@ export default (
   );
   process.stdout.write(
     `${`${totalViolations.length}`.red.bold} violations found so far. ${
-      `There are ${`${queue.length}`.bold} remaining pages in the queue.`.gray
+      `There are ${`${remaining}`.bold} remaining pages in the queue.`.gray
     }`
   );
 };

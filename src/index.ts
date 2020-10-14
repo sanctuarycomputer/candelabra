@@ -20,12 +20,17 @@ candelabra
     '-g, --groupBy <group>',
     'SEVERITY | PAGE | TYPE, defaults to SEVERITY'
   )
+  .option(
+    '-l, --limit <group>',
+    'limit the number of URLs to crawl, defaults to 1000'
+  )
   .command('* <url>')
   .action((url: Url): void => {
     const commanderOptions: any = candelabra.opts();
     const options: CommandOptions = {
       output: commanderOptions.output,
-      groupBy: commanderOptions.groupBy
+      groupBy: commanderOptions.groupBy,
+      limit: commanderOptions.limit || 1000
     };
 
     checkWebsiteForViolations(url, options);
