@@ -1,3 +1,5 @@
+import 'colors';
+
 import puppeteer from 'puppeteer';
 import { AxePuppeteer } from 'axe-puppeteer';
 import { AxeResults, Result } from 'axe-core';
@@ -55,7 +57,14 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
         timeout: 3 * 60 * 1000
       });
 
-      const results: AxeResults = await new AxePuppeteer(page).analyze();
+      let results: AxeResults | null = null;
+      try {
+        results = await new AxePuppeteer(page).analyze();
+      } catch (e) {
+        process.stdout.write(e.red);
+        process.exit();
+      }
+
       const violationsByRule: {
         [key: string]: Result;
       } = results.violations.reduce(
