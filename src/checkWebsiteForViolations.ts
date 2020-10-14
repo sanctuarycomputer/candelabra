@@ -43,12 +43,21 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
 
   let queue: Url[] = [];
   let totalViolations: Violation[] = [];
+  let count: number = 0;
 
   const recursivelyCheckForViolations = async (url: Url): Promise<void> => {
     const checkedUrls = Object.keys(sitemap);
 
-    if (!checkedUrls.includes(url)) {
-      updateStatusMessage(url, entryUrl, queue, totalViolations);
+    if (
+      !checkedUrls.includes(url) &&
+      !(options.limit && count >= options.limit)
+    ) {
+      updateStatusMessage(
+        url,
+        entryUrl,
+        options.limit ? Math.min(queue.length, options.limit) : queue.length,
+        totalViolations
+      );
 
       await page.setViewport({ width: 1366, height: 768 });
       await page.setBypassCSP(true);
@@ -118,7 +127,10 @@ export default async (url: Url, options: CommandOptions): Promise<void> => {
           []
         );
 
-      if (queue.length) await recursivelyCheckForViolations(queue[0]);
+      if (queue.length) {
+        count = count + 1;
+        await recursivelyCheckForViolations(queue[0]);
+      }
     }
   };
 
