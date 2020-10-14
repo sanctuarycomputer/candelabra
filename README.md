@@ -4,7 +4,7 @@
 
 ## What does Candelabra do?
 
-Candelabra is a web crawler designed to generate a thorough sitemap and audit each page for valid, semantic HTML and accessibility violations. Using Candelabra, you can check any website for accessibility violations. More importantly, you can point it to local servers and other developer environments to test your code before you deploy.
+Candelabra is a web crawler designed to generate a sitemap from an entry URL and audit each of its pages for semantic HTML and accessibility violations. Using Candelabra, you can check any website for accessibility violations. More importantly, you can point it to local servers and other developer environments to test your code before you deploy.
 
 It works out of the box for any website that doesn't require authentication on entry. This means it can audit any JavaScript-rendered website including those built with the popular front-end frameworks: React, Vue, Ember, Angular, etc.
 
@@ -29,6 +29,7 @@ candelabra <entry-url>
 | -V, --version         | output the version number                               |
 | -o, --output <path>   | file path to output JSON, defaults to displaying inline |
 | -g, --groupBy <group> | SEVERITY / PAGE / RULE, defaults to SEVERITY            |
+| -l, --limit <limit>   | limit the number of URLs to crawl, defaults to 1000     |
 | -h, --help            | output usage information                                |
 
 Use `candelabra -h` for a current list of options while development continues.
